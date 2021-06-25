@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "toppings",
+  "info": {
+    "name": "topping",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "internalName": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "markup": {
+      "type": "decimal",
+      "required": true
+    },
+    "items": {
+      "collection": "item",
+      "via": "toppings",
+      "dominant": true
+    }
+  }
+}

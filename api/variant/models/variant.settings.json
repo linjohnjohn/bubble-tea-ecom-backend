@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "variants",
+  "info": {
+    "name": "variant",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "internalName": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "markup": {
+      "type": "decimal",
+      "required": true
+    },
+    "items": {
+      "collection": "item",
+      "via": "variants",
+      "dominant": true
+    }
+  }
+}

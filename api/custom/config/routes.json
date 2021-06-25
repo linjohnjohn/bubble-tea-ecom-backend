@@ -1,0 +1,14 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/logout",
+      "handler": "Custom.logout"
+    },
+    {
+      "method": "GET",
+      "path": "/failure/:id",
+      "handler": "Custom.failure"
+    }
+  ]
+}
