@@ -133,9 +133,10 @@ module.exports = {
         });
         ctx.cookies.set("token", token, {
           httpOnly: true,
-          // secure: process.env.NODE_ENV === "production" ? true : false,
+          secure: process.env.NODE_ENV === "production" ? true : false,
           maxAge: 1000 * 60 * 60 * 24 * 14, // 14 Day Age
           domain: process.env.NODE_ENV === "development" ? "localhost" : process.env.API_DOMAIN,
+          sameSite: "none",
         });
 
         ctx.send({
