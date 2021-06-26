@@ -3,6 +3,9 @@
 module.exports = {
   async logout(ctx) {
     ctx.cookies.set("token", null, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      domain: process.env.NODE_ENV === "development" ? "localhost" : process.env.API_DOMAIN,
       sameSite: "none",
     });
     ctx.send({
