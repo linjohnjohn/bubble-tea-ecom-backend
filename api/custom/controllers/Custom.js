@@ -2,7 +2,9 @@
 
 module.exports = {
   async logout(ctx) {
-    ctx.cookies.set("token", null);
+    ctx.cookies.set("token", null, {
+      sameSite: "none",
+    });
     ctx.send({
       authorized: true,
       message: "Successfully destroyed session",
