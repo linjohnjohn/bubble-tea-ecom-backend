@@ -136,7 +136,8 @@ module.exports = {
           secure: process.env.NODE_ENV === "production" ? true : false,
           maxAge: 1000 * 60 * 60 * 24 * 14, // 14 Day Age
           domain: process.env.NODE_ENV === "development" ? "localhost" : process.env.API_DOMAIN,
-          sameSite: "none",
+          // samesite none cannot be used with non secure cookie on localhost
+          sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         });
 
         ctx.send({
