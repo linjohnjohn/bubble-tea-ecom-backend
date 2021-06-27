@@ -16,7 +16,18 @@ module.exports = ({ env }) => {
     }
   }
 
+  const email = {
+    provider: 'sendgrid',
+    providerOptions: {
+      apiKey: env('SENDGRID_API_KEY'),
+    },
+    settings: {
+      defaultFrom: 'no-reply@linjohnjohn.me',
+      defaultReplyTo: 'jlin724@alum.mit.edu',
+    }
+  }
   return {
     upload,
+    email
   }
 };
