@@ -35,22 +35,24 @@ module.exports = {
 
       // The identifier is required.
       if (!params.identifier) {
+        const message = 'Please provide your username or your e-mail.';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.email.provide',
-            message: 'Please provide your username or your e-mail.',
+            message,
           })
         );
       }
 
       // The password is required.
       if (!params.password) {
+        const message = 'Please provide your password.';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.password.provide',
-            message: 'Please provide your password.',
+            message,
           })
         );
       }
@@ -71,11 +73,12 @@ module.exports = {
       const user = await strapi.query('user', 'users-permissions').findOne(query);
 
       if (!user) {
+        const message = 'Identifier or password invalid.';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.invalid',
-            message: 'Identifier or password invalid.',
+            message,
           })
         );
       }
@@ -84,33 +87,35 @@ module.exports = {
         _.get(await store.get({ key: 'advanced' }), 'email_confirmation') &&
         user.confirmed !== true
       ) {
+        const message = 'Your account email is not confirmed';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.confirmed',
-            message: 'Your account email is not confirmed',
+            message,
           })
         );
       }
 
       if (user.blocked === true) {
+        const message = 'Your account has been blocked by an administrator';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.blocked',
-            message: 'Your account has been blocked by an administrator',
+            message,
           })
         );
       }
 
       // The user never authenticated with the `local` provider.
       if (!user.password) {
+        const message = 'This user never set a local password, please login with the provider used during account creation.';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.password.local',
-            message:
-              'This user never set a local password, please login with the provider used during account creation.',
+            message,
           })
         );
       }
@@ -120,11 +125,12 @@ module.exports = {
       ].services.user.validatePassword(params.password, user.password);
 
       if (!validPassword) {
+        const message = 'Identifier or password invalid.';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.invalid',
-            message: 'Identifier or password invalid.',
+            message,
           })
         );
       } else {
@@ -149,11 +155,12 @@ module.exports = {
       }
     } else {
       if (!_.get(await store.get({ key: 'grant' }), [provider, 'enabled'])) {
+        const message = 'This provider is disabled.';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'provider.disabled',
-            message: 'This provider is disabled.',
+            message,
           })
         );
       }
@@ -199,11 +206,12 @@ module.exports = {
         .findOne({ resetPasswordToken: `${params.code}` });
 
       if (!user) {
+        const message = 'Incorrect code provided.';
         return ctx.badRequest(
-          null,
+          message,
           formatError({
             id: 'Auth.form.error.code.provide',
-            message: 'Incorrect code provided.',
+            message,
           })
         );
       }
@@ -230,19 +238,21 @@ module.exports = {
       params.passwordConfirmation &&
       params.password !== params.passwordConfirmation
     ) {
+      const message = 'Passwords do not match.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.password.matching',
-          message: 'Passwords do not match.',
+          message,
         })
       );
     } else {
+      const message = 'Incorrect params provided.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.params.provide',
-          message: 'Incorrect params provided.',
+          message,
         })
       );
     }
@@ -289,11 +299,12 @@ module.exports = {
     if (isEmail) {
       email = email.toLowerCase();
     } else {
+      const message = 'Please provide valid email address.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.email.format',
-          message: 'Please provide valid email address.',
+          message,
         })
       );
     }
@@ -311,11 +322,12 @@ module.exports = {
 
     // User not found.
     if (!user) {
+      const message = 'This email does not exist.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.user.not-exist',
-          message: 'This email does not exist.',
+          message,
         })
       );
     }
@@ -390,11 +402,12 @@ module.exports = {
     });
 
     if (!settings.allow_register) {
+      const message = 'Register action is currently disabled.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.advanced.allow_register',
-          message: 'Register action is currently disabled.',
+          message,
         })
       );
     }
@@ -406,22 +419,24 @@ module.exports = {
 
     // Password is required.
     if (!params.password) {
+      const message = 'Please provide your password.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.password.provide',
-          message: 'Please provide your password.',
+          message,
         })
       );
     }
 
     // Email is required.
     if (!params.email) {
+      const message = 'Please provide your email.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.email.provide',
-          message: 'Please provide your email.',
+          message,
         })
       );
     }
@@ -429,11 +444,12 @@ module.exports = {
     // Throw an error if the password selected by the user
     // contains more than three times the symbol '$'.
     if (strapi.plugins['users-permissions'].services.user.isHashed(params.password)) {
+      const message = 'Your password cannot contain more than three times the symbol `$`.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.password.format',
-          message: 'Your password cannot contain more than three times the symbol `$`.',
+          message,
         })
       );
     }
@@ -443,11 +459,12 @@ module.exports = {
       .findOne({ type: settings.default_role }, []);
 
     if (!role) {
+      const message = 'Impossible to find the default role.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.role.notFound',
-          message: 'Impossible to find the default role.',
+          message,
         })
       );
     }
@@ -458,11 +475,12 @@ module.exports = {
     if (isEmail) {
       params.email = params.email.toLowerCase();
     } else {
+      const message = 'Please provide valid email address.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.email.format',
-          message: 'Please provide valid email address.',
+          message,
         })
       );
     }
@@ -475,21 +493,23 @@ module.exports = {
     });
 
     if (user && user.provider === params.provider) {
+      const message = 'Email is already taken.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.email.taken',
-          message: 'Email is already taken.',
+          message,
         })
       );
     }
 
     if (user && user.provider !== params.provider && settings.unique_email) {
+      const message = 'Email is already taken.';
       return ctx.badRequest(
-        null,
+        message,
         formatError({
           id: 'Auth.form.error.email.taken',
-          message: 'Email is already taken.',
+          message,
         })
       );
     }
@@ -529,7 +549,7 @@ module.exports = {
         }
         : { id: 'Auth.form.error.email.taken', message: 'Email already taken' };
 
-      ctx.badRequest(null, formatError(adminError));
+      ctx.badRequest(adminError.message, formatError(adminError));
     }
   },
 
